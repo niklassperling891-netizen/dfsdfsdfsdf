@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "drop_matching_items",
+  "version": "${version}",
+  "name": "Drop Matching Items",
+  "description": "Lässt mit einem Tastenkürzel alle Stapel des Items unter dem Mauszeiger fallen.",
+  "authors": ["Codex"],
+  "environment": "client",
+  "entrypoints": {
+    "client": ["de.example.dropmatching.DropMatchingClient"]
+  },
+  "mixins": ["drop_matching_items.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
