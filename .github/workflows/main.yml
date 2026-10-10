@@ -1,0 +1,39 @@
+name: Build Mod
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Java 21 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Mod bauen
+        shell: bash
+        run: |
+          WRAPPER="$(find . -type f -name gradlew -not -path '*/.git/*' -print -quit)"
+          if [ -z "$WRAPPER" ]; then
+            echo "gradlew wurde nicht gefunden. Lade das Mod-Projekt mit dem Ordner gradlew ins Repository."
+            exit 1
+          fi
+          PROJECT_DIR="$(dirname "$WRAPPER")"
+          cd "$PROJECT_DIR"
+          chmod +x ./gradlew
+          ./gradlew build
+
+      - name: Mod-JAR bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: drop-matching-items
+          path: "**/build/libs/*.jar"
+          if-no-files-found: error
